@@ -1,0 +1,11 @@
+.Player {
+    height: 720px;
+}
+
+.VolumeBar {
+    width: 100px;
+}
+.SoundIcon {
+    font-size: 24px;
+    color: #08c;
+}

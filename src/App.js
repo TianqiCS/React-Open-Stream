@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Player from "./components/Player";
+import {Card, Input} from "antd";
 
 class App extends Component {
+  state = {
+      url: "http://162.246.157.118:8080/hls/test.m3u8"
+  };
+
+  onChangeUrl = (e) => {
+      this.setState({url: "Http://162.246.157.118:8080/hls/"+ e.target.value + ".m3u8"})
+  };
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      return (
+          <Card
+              title={
+                  <Input
+                      addonBefore="Http://162.246.157.118:8080/hls/"
+                      addonAfter=".m3u8"
+                      defaultValue="test"
+                      onPressEnter={this.onChangeUrl}/>
+              }
+              cover={<Player url={this.state.url}/>}>
+          </Card>
+      );
   }
 }
 
