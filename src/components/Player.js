@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
-import {message, Button, Slider, Icon} from "antd";
+import { findDOMNode } from 'react-dom'
+import {message, Button, Menu, Dropdown, Slider, Icon, Card, Tabs, Switch} from "antd";
 import "./Player.css";
+import screenfull from 'screenfull'
 
 export default class Player extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playing: false,
+            playing: true,
             volume: 100,
             muted: false,
+            pip: false,
+            visible: false,
+            playbackRate: 4,
         }
 
     }
@@ -41,6 +46,14 @@ export default class Player extends Component {
             }
         }
     };
+    pip = () => {
+        this.setState({ pip: !this.state.pip })
+    };
+
+    setPlaybackRate = (e) => {
+        this.setState({ playbackRate: e})
+    };
+
     onBlur = () => {
         if (!this.state.playing) {
             return {
@@ -49,47 +62,142 @@ export default class Player extends Component {
         }
     };
 
+    onEnablePIP = () => {
+        console.log('onEnablePIP');
+        this.setState({ pip: true })
+    };
+    onDisablePIP = () => {
+        console.log('onDisablePIP');
+        this.setState({ pip: false })
+    };
+
+    handleMenuClick = (e) => {
+        if (e.key === '3') {
+            this.setState({ visible: false });
+        }
+    };
+
+    handleVisibleChange = (flag) => {
+        this.setState({ visible: flag });
+    };
+
+    handlePlayerClick = () => {
+      if (!this.state.visible) {
+          this.pause()
+      }
+    };
+
+    toggleMuted = () => {
+        this.setState({ muted: !this.state.muted })
+    };
+
+    onClickFullscreen = () => {
+        screenfull.request(findDOMNode(this.player))
+    };
+
+    ref = player => {
+        this.player = player
+    };
+
     render () {
+        const TabPane = Tabs.TabPane;
+        const menu = (
+            <Menu onClick={this.handleMenuClick} className="ContentMenu">
+                <Tabs defaultActiveKey="1" className="ContentMenuTabs" >
+                    <TabPane tab={<span><Icon type="setting" />Basic</span>} key="1">
+                        <Icon type="sound"
+                              className="SoundIcon"
+                              onClick={this.toggleMuted}
+                              style={{color: this.state.muted ? "red" : "#08c"}}
+                        />
+                        <Slider
+                            className="VolumeBar"
+                            min={0}
+                            max={100}
+                            onChange={(value)=>{
+                                this.setState({
+                                    volume: value
+                                })
+                            }}
+                            value={this.state.volume}
+                        />
+                        <br/>
+                        <Icon type="forward" className="SoundIcon"/>
+                        <Slider
+                            className="VolumeBar"
+                            min={1}
+                            max={7}
+                            onChange={this.setPlaybackRate}
+                            value={this.state.playbackRate}
+                            tipFormatter={(value) => {return `x${value * 0.25}`;}}
+                        />
+                        <br/>
+                        <span>
+                            <Button icon="fullscreen" size="large" className="FullscreenButton" onClick={this.onClickFullscreen}/>
+                        {ReactPlayer.canEnablePIP(this.props.url) &&
+                            <Button icon="down-square" size="large" className="PiPButton" onClick={this.pip}/>
+                        }
+                        </span>
+                        {/*
+                        {this.state.fullscreen ? <Icon type="fullscreen" className="SoundIcon"/> : <Icon type="fullscreen-exit" className="SoundIcon"/>}
+                        <Switch
+                            onChange={this.onClickFullscreen}
+                        />
+                        */}
+
+                    </TabPane>
+                    <TabPane tab={<span><Icon type="bars" />Tab 2</span>} key="2">
+                        <h2>Video info</h2>
+                        <span>Source: {this.props.url}</span>
+                        <p>{"TODO"}</p>
+
+                    </TabPane>
+                    <TabPane tab={<span><Icon type="info-circle" />About</span>} key="3">
+                        Made by Tianqi @ 0.1.0
+                    </TabPane>
+                </Tabs>
+            </Menu>
+        );
+
         return (
+
             <div
+
                 className="Player"
-                onClick={this.pause}
                 onWheel={this.handleScroll}
             >
+                <Dropdown overlay={menu} trigger={['contextMenu']} onVisibleChange={this.handleVisibleChange} visible={this.state.visible}>
                 <ReactPlayer
+                    ref={this.ref}
                     className='react-player'
                     width='100%'
                     height='100%'
                     url={this.props.url}
                     playing={this.state.playing}
+                    pip={this.state.pip}
                     volume={this.state.volume * 0.01}
                     muted={this.state.muted}
+                    playbackRate={this.state.playbackRate * 0.25}
                     onReady={() => console.log('Player Ready!')}
                     onStart={() => console.log('Player Start!')}
                     onPlay={this.onPlay}
+                    onEnablePIP={this.onEnablePIP}
+                    onDisablePIP={this.onDisablePIP}
                     onPause={this.onPause}
                     onBuffer={() => console.log('onBuffer')}
                     onSeek={e => console.log('onSeek', e)}
                     onEnded={this.onEnded}
                     onError={e => console.log("[Error]: " + e)}
                     style={this.onBlur()}
+                    onClick={this.handlePlayerClick}
+
                 />
-                <tr>
-                    <th><Icon type="sound" className="SoundIcon" /></th>
-                    <th>
-                        <Slider
-                        className="VolumeBar"
-                        min={0}
-                        max={100}
-                        onChange={(value)=>{
-                            this.setState({
-                                volume: value
-                            })
-                        }}
-                        value={this.state.volume}
-                    />
-                    </th>
-                </tr>
+                </Dropdown>
+                <Dropdown overlay={menu}>
+                    <Button style={{ marginLeft: 8 }}>
+                        Player Settings <Icon type="down" />
+                    </Button>
+                </Dropdown>
 
             </div>
         )

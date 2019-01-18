@@ -1,0 +1,24 @@
+.ant-input{
+    width: 40%;
+}
+
+.messages {
+    min-height: 30%;
+}
+#chat {
+    overflow-y:auto;
+}
+
+#chatbox {
+    overflow-y: auto;
+    overflow-x:hidden;
+}
+
+#filebox {
+    width: 99%;
+}
+
+li {
+    display:inline;
+    margin: 3vh;
+}

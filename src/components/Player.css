@@ -1,11 +1,59 @@
 .Player {
-    height: 720px;
+    height: 54%;
+    width: 96%;
+    background-color: #282c34;
 }
 
 .VolumeBar {
-    width: 100px;
+    width: 250px;
+    display:inline-block;
+    position: relative;
+    top: +4px;
 }
 .SoundIcon {
     font-size: 24px;
     color: #08c;
+    display:inline-block;margin-right:10px;
 }
+
+.ContentMenu {
+    background: #282c34;
+    opacity: 0.9;
+}
+
+.ContentMenuTabs {
+    margin: 0 1.5em 2em;
+    color: #08c;
+    width: auto;
+    max-width: 500px;
+}
+
+.FullscreenButton {
+    margin-top: 10px;
+    float: left;
+    border-color: #08c;
+    font-size: large;
+    background-color: #282c34;
+    width: 72px;
+    color: #61dafb;
+}
+.FullscreenButton:hover {
+    background-color: #08c;
+    color: red;
+}
+
+.PiPButton {
+    margin-top: 10px;
+    float: right;
+    border-color: #08c;
+    font-size: large;
+    background-color: #282c34;
+    width: 72px;
+    color: #61dafb;
+}
+.PiPButton:hover {
+    background-color: #08c;
+    color: red;
+}
+
+
