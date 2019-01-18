@@ -165,6 +165,7 @@ export default class Player extends Component {
 
                 className="Player"
                 onWheel={this.handleScroll}
+                key={this.props.url}  // important! force refresh the player
             >
                 <Dropdown overlay={menu} trigger={['contextMenu']} onVisibleChange={this.handleVisibleChange} visible={this.state.visible}>
                 <ReactPlayer

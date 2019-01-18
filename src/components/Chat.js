@@ -18,11 +18,9 @@ class Chat extends React.Component{
         };
         console.log(this.state.messages[0]);
 
-        this.socket = io('http://vanillacraft.cn:8000');
-
         this.sendMessage = () => {
             if (!this.props.username) {alert("Enter a user name first!"); return}
-            this.socket.emit('SEND_MESSAGE', {
+            this.props.socket.emit('SEND_MESSAGE', {
                 author: this.props.username,
                 message: this.state.message
             });
@@ -32,8 +30,7 @@ class Chat extends React.Component{
                 }});
         };
 
-
-        this.socket.on('RECEIVE_MESSAGE', function(data){
+        this.props.socket.on('RECEIVE_MESSAGE', function(data){
             addMessage(data);
         });
 

@@ -4,29 +4,38 @@ import './App.css';
 import Player from "./components/Player";
 import {Button, Card, Drawer, Input} from "antd";
 import Chat from "./components/Chat";
+import io from "socket.io-client";
 
 class App extends Component {
-  state = {
-      url: "Http://162.246.157.118:8080/hls/test.m3u8",
-      visible: true,
-      username: ""
-  };
+    constructor(props) {
+        super(props);
+        this.state = {
+            url: "Http://162.246.157.118:8080/hls/test.m3u8",
+            visible: true,
+            username: "",
+            room: "test",
+            socket: this.socket = io('http://vanillacraft.cn:8000')
+        };
+        this.socket.emit('JOIN', 'test');
+
+    }
 
   onChangeUrl = (e) => {
-      this.setState({url: "Http://162.246.157.118:8080/hls/"+ e.target.value + ".m3u8"})
+      this.setState({url: "Http://162.246.157.118:8080/hls/"+ e.target.value + ".m3u8", room: e.target.value});
+      this.socket.emit('JOIN', e.target.value);
   };
 
-    showDrawer = () => {
-        this.setState({
-            visible: true,
-        });
-    };
+  showDrawer = () => {
+      this.setState({
+          visible: true,
+      });
+  };
 
-    onClose = () => {
-        this.setState({
-            visible: false,
-        });
-    };
+  onClose = () => {
+      this.setState({
+          visible: false,
+      });
+  };
 
   render() {
       const Search = Input.Search;
@@ -44,13 +53,15 @@ class App extends Component {
                       Open
                   </Button>
                   <Drawer
+                      className="ChatDrawer"
                       title="Chat"
                       placement="right"
+                      width="512"
                       closable={false}
                       onClose={this.onClose}
                       visible={this.state.visible}
                   >
-                      {"Name"}
+                      {"Name "}
                       <Input
                           placeholder="username"
                           value={this.state.username}
@@ -59,7 +70,7 @@ class App extends Component {
                                   username: e.target.value})
                           }}
                       />
-                      <Chat username={this.state.username}/>
+                      <Chat username={this.state.username} socket={this.state.socket}/>
                   </Drawer>
               </div>
           </div>
