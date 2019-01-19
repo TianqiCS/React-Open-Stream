@@ -1,5 +1,5 @@
 import React from "react";
-import {Input, List, Avatar, Icon} from 'antd';
+import {Input, List, Avatar, Icon, /*notification*/ } from 'antd';
 import './Chat.css';
 
 class Chat extends React.Component{
@@ -28,8 +28,20 @@ class Chat extends React.Component{
                 }});
         };
 
+        /*
+        const openNotification = (data) => {
+            notification.open({
+                message: data.author,
+                description: data.message.text,
+                onClick: () => {
+                    console.log('Notification Clicked!');
+                },
+            });
+        };*/
+
         this.props.socket.on('RECEIVE_MESSAGE', function(data){
             addMessage(data);
+            // openNotification(data);
         });
 
         const addMessage = data => {
@@ -48,7 +60,11 @@ class Chat extends React.Component{
 
 
     }
+
+
+
     render(){
+
         const Send = Input.Search;
         return (
                 <div id="chat">
