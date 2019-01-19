@@ -30,13 +30,3 @@
     transform: rotate(360deg);
   }
 }
-
-.Home{
-  position: absolute;
-  left: 15%;
-  width: 70%;
-}
-
-.ant-input{
-  width: 100%;
-}

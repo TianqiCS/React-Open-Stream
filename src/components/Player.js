@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
 import { findDOMNode } from 'react-dom'
-import {message, Button, Menu, Dropdown, Slider, Icon, Card, Tabs, Switch} from "antd";
+import {Button, Menu, Dropdown, Slider, Icon, Tabs} from "antd";
 import "./Player.css";
 import screenfull from 'screenfull'
 
@@ -195,7 +195,7 @@ export default class Player extends Component {
                 />
                 </Dropdown>
                 <Dropdown overlay={menu}>
-                    <Button style={{ marginLeft: 8 }}>
+                    <Button style={{ marginLeft: 0, backgroundColor: '#282c34', borderColor: '#282c34', color: '#08c'}}>
                         Player Settings <Icon type="down" />
                     </Button>
                 </Dropdown>

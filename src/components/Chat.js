@@ -1,8 +1,6 @@
 import React from "react";
-import {Input, Card, List, Avatar, Popover, Icon} from 'antd';
+import {Input, List, Avatar, Icon} from 'antd';
 import './Chat.css';
-
-import io from "socket.io-client";
 
 class Chat extends React.Component{
     constructor(props){
@@ -41,7 +39,7 @@ class Chat extends React.Component{
             console.log(this.state.messages);
         };
 
-        const clearMessage = () => {
+        this.clearMessage = () => {
             sessionStorage.setItem('messages', JSON.stringify([]));
             this.setState({
                 messages: JSON.parse(sessionStorage.getItem('messages'))
@@ -58,6 +56,7 @@ class Chat extends React.Component{
                           size="small"
                           itemLayout="vertical"
                           dataSource={this.state.messages}
+                          footer={<Icon type="delete" onClick={this.clearMessage}/>}
                           renderItem={message => (
                             <List.Item>
                                 <List.Item.Meta
