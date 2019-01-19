@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Room from "./components/Room";
 import "./App.css"
-import {Alert, Avatar, Icon, Input, List} from "antd";
+import {Alert, Button, Icon, Input, List} from "antd";
 import {getLiveStats} from "./utils/network";
 
 function App() {
@@ -34,16 +34,20 @@ class Home extends React.Component {
     componentDidMount() {
         getLiveStats().then((data) => {
             const xml = data.data;
+            console.log(xml);
             const rooms = xml.getElementsByTagName("name");
+            const times = xml.getElementsByTagName("time");
             for (let i=1;i<rooms.length; i++) {
-                this.setState({list: [...this.state.list, rooms[i].innerHTML]});
+                this.setState({list: [...this.state.list, {room: rooms[i].innerHTML, time: times[i].innerHTML}]});
             }
         })
     }
 
     enterRoom = () => {
         window.location.href="/"+this.state.room;
+        Object.keys().filter()
     };
+
 
     render() {
 
@@ -67,7 +71,7 @@ class Home extends React.Component {
             "Using any custom source broadcast software (like OBS),\n" +
             " you can stream at [rtmp://live.vanillacraft.cn/live], with the streaming [key] as your [room]\n" +
             "- Viewer -\n" +
-            "Input the room you want to Enter in the bar beneath. Be aware that Phone layout is not well supported!\n" +
+            "Input the room or select from available ones below. Be aware that Phone layout is not well supported!\n" +
             "You may need to rotate your phone.\n";
         const eulaZh = "最终用户协议 - 你继续使用本网站便意味你同意\n" +
             "欢迎你来到这个网站" +
@@ -89,7 +93,7 @@ class Home extends React.Component {
             "使用任何开放推流软件 (比如 OBS),\n" +
             " 你可以推流到 [rtmp://live.vanillacraft.cn/live], 密钥 [key] 就是你的 [房间]\n" +
             "- 观众 -\n" +
-            "在下方输入你想看的房间. 但请注意手机端目前支持不完善!\n" +
+            "在下方输入或者选择你想看的房间. 但请注意手机端目前支持不完善!\n" +
             "你可能需要旋转手机.\n";
 
         const Go = Input.Search;
@@ -101,16 +105,17 @@ class Home extends React.Component {
                 <br/>
                 <Go className="RoomInput" type="text" placeholder="Room" value={this.state.room} onChange={ev => this.setState({room: ev.target.value})}
                     onPressEnter={this.enterRoom} enterButton="Go!" onSearch={this.enterRoom} size="large"/>
-
                 <List id="roomList"
                       size="small"
+                      header="Live Rooms"
                       itemLayout="vertical"
+                      bordered
+                      locale={{emptyText: 'None'}}
                       dataSource={this.state.list}
                       renderItem={room => (
-                          <List.Item>
-                              <List.Item.Meta
-                                  title={<a href={room}>{room}</a>}
-                              />
+                          <List.Item extra={"Lasting: " + Math.round(room.time/60000)+ " Minutes"}>
+                              <List.Item.Meta/>
+                              <Button href={room.room}>{room.room}</Button>
                           </List.Item>
                       )}
                 />

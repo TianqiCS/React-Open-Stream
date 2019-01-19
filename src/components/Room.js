@@ -9,11 +9,23 @@ class Room extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            viewer: 0,
             visible: true,
             username: "",
             socket: this.socket = io('http://vanillacraft.cn:8000')  // chatting server url
         };
         this.socket.emit('JOIN', this.props.room);
+        this.socket.emit('QUERY_VIEWER', this.props.room);
+
+        this.socket.on('SEND_VIEWER', function(data){
+            setViewer(data);
+        });
+
+        const setViewer = (data) => {
+            this.setState({
+                viewer: data,
+            });
+        };
 
     }
 
@@ -23,6 +35,7 @@ class Room extends Component {
         this.socket.emit('JOIN', e.target.value);
     };
     */
+
 
     showDrawer = () => {
         this.setState({
@@ -45,7 +58,7 @@ class Room extends Component {
             <div>
                 <Input
                     addonBefore="Room Number: "
-                    addonAfter="Share"
+                    addonAfter={"Viewers: "+this.state.viewer}
                     value={this.props.room}
                     onClick={this.copyUrl}
                 />
