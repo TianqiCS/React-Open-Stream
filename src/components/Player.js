@@ -5,6 +5,12 @@ import {Button, Menu, Dropdown, Slider, Icon, Tabs} from "antd";
 import "./Player.css";
 import screenfull from 'screenfull'
 
+/**
+ * The Player
+ *  @see ReactPlayer {@link https://www.npmjs.com/package/react-player}
+ *  @version 0.9.0-pre
+ *  @author TianqiCS
+ */
 export default class Player extends Component {
     constructor(props) {
         super(props);
@@ -20,12 +26,10 @@ export default class Player extends Component {
     }
 
     onPause = () => {
-        console.log('Paused');
         this.setState({ playing: false })
     };
 
     onPlay = () => {
-        console.log('Played');
         this.setState({ playing: true })
     };
 
@@ -36,6 +40,8 @@ export default class Player extends Component {
     pause = () => {
         this.setState({ playing: !this.state.playing })
     };
+
+    // adjust volume by scroll
     handleScroll = (e) => {
         if (!this.state.muted) {
             if (this.state.volume < 100 && e.nativeEvent.wheelDelta > 0) {
@@ -46,6 +52,7 @@ export default class Player extends Component {
             }
         }
     };
+
     pip = () => {
         this.setState({ pip: !this.state.pip })
     };
@@ -63,18 +70,14 @@ export default class Player extends Component {
     };
 
     onEnablePIP = () => {
-        console.log('onEnablePIP');
         this.setState({ pip: true })
     };
     onDisablePIP = () => {
-        console.log('onDisablePIP');
         this.setState({ pip: false })
     };
 
     handleMenuClick = (e) => {
-        if (e.key === '3') {
-            this.setState({ visible: false });
-        }
+        // prevent close
     };
 
     handleVisibleChange = (flag) => {
@@ -99,6 +102,14 @@ export default class Player extends Component {
         this.player = player
     };
 
+    /**
+     * Render the player
+     * @see Menu {@link https://ant.design/components/menu/}
+     * @see Tabs {@link https://ant.design/components/tabs/}
+     * @see Slider {@link https://ant.design/components/slider/}
+     * @see Dropdown {@link https://ant.design/components/dropdown/}
+     * @returns {*} the player
+     */
     render () {
         const TabPane = Tabs.TabPane;
         const menu = (
@@ -138,18 +149,11 @@ export default class Player extends Component {
                             <Button icon="down-square" size="large" className="PiPButton" onClick={this.pip}/>
                         }
                         </span>
-                        {/*
-                        {this.state.fullscreen ? <Icon type="fullscreen" className="SoundIcon"/> : <Icon type="fullscreen-exit" className="SoundIcon"/>}
-                        <Switch
-                            onChange={this.onClickFullscreen}
-                        />
-                        */}
-
                     </TabPane>
                     <TabPane tab={<span><Icon type="bars" />Tab 2</span>} key="2">
                         <h2>Video info</h2>
                         <span>Source: {this.props.url}</span>
-                        <p>{"TODO"}</p>
+                        <p>{"****TODO****"}</p>
 
                     </TabPane>
                     <TabPane tab={<span><Icon type="info-circle" />About</span>} key="3">
@@ -162,7 +166,6 @@ export default class Player extends Component {
         return (
 
             <div
-
                 className="Player"
                 onWheel={this.handleScroll}
                 key={this.props.url}  // important! force refresh the player
@@ -199,7 +202,6 @@ export default class Player extends Component {
                         Player Settings <Icon type="down" />
                     </Button>
                 </Dropdown>
-
             </div>
         )
     }

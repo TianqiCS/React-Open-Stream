@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import './Room.css';
 import Player from "./Player";
 import {Button, Drawer, Input} from "antd";
 import Chat from "./Chat";
 import io from "socket.io-client";
 
+/**
+ *  Room Page
+ *  @see socket.io {@link https://socket.io/docs/}
+ *  @version 1.0.0
+ *  @author TianqiCS
+ */
+
+/**
+ * Room Page
+ * Send join event to the backend and query for viewer number
+ */
 class Room extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +24,7 @@ class Room extends Component {
             username: "",
             socket: this.socket = io('http://vanillacraft.cn:8000')  // chatting server url
         };
+
         this.socket.emit('JOIN', this.props.room);
         this.socket.emit('QUERY_VIEWER', this.props.room);
 
@@ -26,33 +37,42 @@ class Room extends Component {
                 viewer: data,
             });
         };
-
     }
 
-    /*
-    onChangeUrl = (e) => {
-        this.setState({url: "Http://162.246.157.118:8080/hls/"+ e.target.value + ".m3u8", room: e.target.value});
-        this.socket.emit('JOIN', e.target.value);
-    };
-    */
-
-
+    /**
+     * show the chat drawer
+     */
     showDrawer = () => {
         this.setState({
             visible: true,
         });
     };
 
+    /**
+     * close the chat drawer
+     */
     onClose = () => {
         this.setState({
             visible: false,
         });
     };
 
+    /**
+     * alert the user of the url
+     */
     copyUrl = () => {
         alert("Shareable Link: vanillacraft.cn/"+this.props.room)
     };
 
+    /**
+     * Render the Room Page
+     * @see Input {@link https://ant.design/components/input/}
+     * @see Button {@link https://ant.design/components/button/}
+     * @see Drawer {@link https://ant.design/components/drawer/}
+     * @see Player
+     * @see Chat
+     * @returns {*} The Room Page
+     */
     render() {
         return (
             <div>

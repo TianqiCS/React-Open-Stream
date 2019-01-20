@@ -2,6 +2,11 @@ import React from "react";
 import {Input, List, Avatar, Icon, /*notification*/ } from 'antd';
 import './Chat.css';
 
+/**
+ * Real-time Chat
+ * @version 1.0.0
+ * @author TianqiCS
+ */
 class Chat extends React.Component{
     constructor(props){
         super(props);
@@ -14,8 +19,12 @@ class Chat extends React.Component{
 
             messages: sessionStorage.getItem('messages') ? JSON.parse(sessionStorage.getItem('messages')) : []
         };
-        console.log(this.state.messages[0]);
 
+        /**
+         * send the message to the backend with text author and text.
+         * FOR SAFETY REASON FILES OPTIONS ARE REMOVED
+         * @see {@link https://github.com/TianqiCS/Chat} Original Chat
+         */
         this.sendMessage = () => {
             if (!this.props.username) {alert("Enter a user name first!"); return}
             this.props.socket.emit('SEND_MESSAGE', {
@@ -28,7 +37,7 @@ class Chat extends React.Component{
                 }});
         };
 
-        /*
+        /* You can have this cool notification
         const openNotification = (data) => {
             notification.open({
                 message: data.author,
@@ -57,12 +66,16 @@ class Chat extends React.Component{
                 messages: JSON.parse(sessionStorage.getItem('messages'))
             })
         }
-
-
     }
 
 
-
+    /**
+     * Render Chat
+     * @see random images {@link http://lorempixel.com}
+     * @see List {@link https://ant.design/components/list/}
+     * @see Input {@link https://ant.design/components/input/}
+     * @returns {*} Chat
+     */
     render(){
 
         const Send = Input.Search;
@@ -84,13 +97,20 @@ class Chat extends React.Component{
                           )}
                     />
                 <Input.Group>
-                    <Send type="text" placeholder="Message" className="form-control" value={this.state.message.text} onChange={ev => this.setState({message: {text: ev.target.value, files: this.state.message.files}})}
-                           onPressEnter={this.sendMessage} enterButton="Send" onSearch={this.sendMessage}/>
+                    <Send type="text"
+                          placeholder="Message"
+                          className="form-control"
+                          value={this.state.message.text}
+                          onChange={
+                              ev => this.setState(
+                                  { message: {text: ev.target.value, files: this.state.message.files} }
+                              )}
+                          onPressEnter={this.sendMessage}
+                          enterButton="Send"
+                          onSearch={this.sendMessage}/>
                 </Input.Group>
                 </div>
         );
-
     }
 }
-// <Input maxLength= "10" type="text" placeholder="Username" value={this.state.username} onChange={ev => this.setState({username: ev.target.value})} className="form-control"/>
 export default Chat;
