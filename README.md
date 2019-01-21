@@ -1,12 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # Architecture 
-In the intance, there are two server, but they can totaly set up into one. 
+In the intance, there are two servers, but they can totally be set up into one. 
 ### Streaming Server 
 Reference: 
 - https://docs.peer5.com/guides/setting-up-hls-live-streaming-server-using-nginx/ 
 - https://www.leaseweb.com/labs/2013/11/streaming-video-demand-nginx-rtmp-module/ 
-* You can follow the instruction above to setup a rtmp server for streaming 
+* You can follow the instructions above to setup a rtmp server for streaming 
 ### Web Server
 - static web page server (You can use github pages if you want) 
 - chat socket.io server using express 
